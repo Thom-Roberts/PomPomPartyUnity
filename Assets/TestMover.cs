@@ -1,20 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem;
+﻿using UnityEngine;
 
 public class TestMover : MonoBehaviour
 {
     [Range(0, 0.5f)]
     public float moveDistance = 0.02f;
     public float tickRate = 0.25f;
+    public float maxTickRate = 0.01f;
     public bool active = false;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating(nameof(Move), 0f, tickRate);
+        InvokeRepeating(nameof(Move), 0f, GameState.fallSpeed);
     }
 
     private void Move()
@@ -35,14 +33,12 @@ public class TestMover : MonoBehaviour
         transform.Translate(0, -moveDistance, 0);
     }
 
-    public void SpeedUp()
+    public void ChangeSpeed(bool wasPressed)
     {
-
-    }
-
-    public void SlowDown()
-    {
-
+        // Increase speed to maximum
+        CancelInvoke(nameof(Move));
+        float newFallSpeed = wasPressed ? GameState.maxFallSpeed : GameState.fallSpeed;
+        InvokeRepeating(nameof(Move), 0f, newFallSpeed);
     }
 
     /***************************
