@@ -26,29 +26,29 @@ public class InputManager : ScriptableObject, PomPomParty.IPlayerActions
     public void OnLeft(InputAction.CallbackContext context)
     {
         if(context.performed)
-            leftEvent.Invoke();
+            leftEvent?.Invoke();
     }
 
     public void OnRight(InputAction.CallbackContext context)
     {
         if(context.performed)
-            rightEvent.Invoke();
+            rightEvent?.Invoke();
     }
 
     public void OnDown(InputAction.CallbackContext context)
     {
-        downEvent.Invoke(context);
+        downEvent?.Invoke(context);
     }
 
     public void OnDebug(InputAction.CallbackContext context)
     {
         if(context.performed)
-            debugEvent.Invoke();
+            debugEvent?.Invoke();
     }
 
     public void OnFlip(InputAction.CallbackContext context)
     {
         if (context.performed)
-            flipEvent.Invoke();
+            flipEvent?.Invoke();
     }
 }

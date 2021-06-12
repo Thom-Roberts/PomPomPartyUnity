@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _inputManager.leftEvent += AttemptMoveLeft;
+        _inputManager.rightEvent += AttemptMoveRight;
         _inputManager.flipEvent += Flip;
     }
 
@@ -20,7 +21,11 @@ public class PlayerController : MonoBehaviour
 
     private void AttemptMoveLeft()
     {
-        
-        throw new System.NotImplementedException();
+        ActivePoms.TryMoveLeft();
+    }
+
+    private void AttemptMoveRight()
+    {
+        ActivePoms.TryMoveRight();
     }
 }
