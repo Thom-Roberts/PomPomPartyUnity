@@ -49,7 +49,7 @@ public class BottomSpawner : MonoBehaviour
             row.Add(color);
         }
 
-        GameState.rows.Add(row);
+        GameState.AddRow(row);
         numSpawns++;
         AdjustSpawnRate();
         Invoke(nameof(SpawnRow), spawnTime);

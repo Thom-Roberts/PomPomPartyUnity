@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Piece
   - Boundary
+  - TopSpawner
   layers:
   - Default
   - TransparentFX

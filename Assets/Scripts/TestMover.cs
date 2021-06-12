@@ -6,31 +6,36 @@ public class TestMover : MonoBehaviour
     public float moveDistance = 0.02f;
     public float tickRate = 0.25f;
     public float maxTickRate = 0.01f;
-    public bool active = false;
+    public bool active = true;
 
+    private Spawner topSpawner;
 
     // Start is called before the first frame update
     void Start()
     {
+        topSpawner = GameObject.FindGameObjectWithTag("TopSpawner").GetComponent<Spawner>();
         InvokeRepeating(nameof(Move), 0f, GameState.fallSpeed);
     }
 
     private void Move()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, new Vector3(0, -1, 0), out hit, 1f)) 
+        if(active)
         {
-            Vector3 nextPosition = new Vector3(transform.position.x, transform.position.y - moveDistance, transform.position.z);
-            // if(hit.collider.bounds.Contains(nextPosition)) // Of course this doesn't work, it would be too easy
-            if(hit.collider.bounds.center.y + hit.collider.bounds.size.y >= nextPosition.y)
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, new Vector3(0, -1, 0), out hit, 1f)) 
             {
-                print("Cannot move");
-                CancelInvoke(nameof(Move));
-                return;
+                Vector3 nextPosition = new Vector3(transform.position.x, transform.position.y - moveDistance, transform.position.z);
+                // if(hit.collider.bounds.Contains(nextPosition)) // Of course this doesn't work, it would be too easy
+                if(hit.collider.bounds.center.y + hit.collider.bounds.size.y >= nextPosition.y)
+                {
+                    print("Cannot move");
+                    CancelInvoke(nameof(Move));
+                    return;
+                }
             }
-        }
 
-        transform.Translate(0, -moveDistance, 0);
+            transform.Translate(0, -moveDistance, 0);
+        }
     }
 
     public void ChangeSpeed(bool wasPressed)
@@ -39,6 +44,16 @@ public class TestMover : MonoBehaviour
         CancelInvoke(nameof(Move));
         float newFallSpeed = wasPressed ? GameState.maxFallSpeed : GameState.fallSpeed;
         InvokeRepeating(nameof(Move), 0f, newFallSpeed);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        print("Collision entered");
+        if(collision.transform.CompareTag("Piece"))
+        {
+            topSpawner.SpawnPiece();
+            active = false;
+        }
     }
 
     /***************************
